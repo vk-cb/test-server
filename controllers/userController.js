@@ -81,4 +81,19 @@ exports.updateUser = async(req, res)=>{
         return res.status(500).json({msg : "Server Error"})
     }
 }
+exports.deleteUser = async(req, res)=>{
+    
+    const {id} = req.params;
+    try {
+        const user = await User.findOne({where: {id}})
+        if(!user) return res.status(404).json({msg : "User not found"})
+        
+        await User.destroy({where : {id}})
+        return res.status(200).json({msg : "User deleted successfully"})
+        
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({msg : "Server Error"})
+    }
+}
 
